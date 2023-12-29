@@ -1,0 +1,72 @@
+{% extends "ToDoApp/base.html" %}
+
+{% block body_block %}
+
+<div class="header-bar">
+    <div>
+        <h1> Hello {{request.user|title}} </h1>
+        <h3 style="margin:0"> You have  <i> {{count}}</i> incomplete task{{ count|pluralize:"s"}}...  </h3>
+    </div>
+
+    <h3><a href="{% url "user-logout-page" %}"><i class="material-icons">logout</i>&#160;&#160; Logout</a></h3>
+    {% comment %} {% if request.user.is_authenticated %}
+        {% else %}
+        
+        <a href="{% url "user-login-page" %}"><i class="material-icons">Login</i>&#160;&#160;Login</a>
+        <a href="{% url "user-register-page" %}">New User? Register...</a>
+    {% endif %} {% endcomment %}
+</div>
+
+<h1 style="padding-left:10px;">My To Do List</h1>
+
+<div id="search-add-wrapper">
+    
+    <form method="GET" style="margin-top: 10px; display:flex;gap:5px;">
+        <input type='text' name='searched' value='{{searched}}'/>
+        <input class="button" type='submit' value="Search"/>
+
+    </form>
+    <a id="add-link" href={% url "task-create-page" %}>&#x2b;</a>
+</div>
+
+
+<div class="task-items-wrapper">
+    {% for task in tasks %}
+    <div class="task-wrapper">
+        {% if task.complete %}
+        <div class="task-title">
+            <a href="{% url "task-complete" task.id %}"><div class="task-complete-icon"></div></a>
+            <i><s><a href="{% url "task-detail-page" task.id %}"> {{task}} </a></s></i>
+        </div>            
+        <div>
+            <a class="delete-link" href="{% url "task-complete" task.id %}">	 <i class="material-icons">repeat</i> </a>
+        <a class="delete-link" style="margin:5px;" href="{% url "task-update-page" task.id %}">	 <i class="material-icons"> settings </i> </a>
+        <a class="delete-link" href="{% url "task-delete-page" task.id %}">	 <i class="material-icons">delete</i>    </a>
+        </div>
+        {% else %}
+
+        <div class="task-title">
+            <a href="{% url "task-complete" task.id %}"><div class="task-incomplete-icon"></div></a>
+            <a href="{% url "task-detail-page" task.id %}"> {{task}} </a>
+        </div>      
+
+       <div style="display:flex; align-items:center;justify-content:between;">
+        <a class="delete-link" href="{% url "task-complete" task.id %}">	 <i class="material-icons">done</i> </a>
+        <a class="delete-link" style="margin:10px;" href="{% url "task-update-page" task.id %}">	 <i class="material-icons"> settings </i> </a>
+        <a class="delete-link" href="{% url "task-delete-page" task.id %}">	 <i class="material-icons">delete</i>    </a>
+       </div>
+        {% endif %}
+
+</div>
+
+{% empty %}
+<h2>No item in the list</h2>
+{% endfor %}
+
+</div>
+
+
+{% comment %} <a href="{% url "task-detail-page" task.id %}">View</a> {% endcomment %}
+{% comment %} <a href="{% url "task-update-page" task.id %}">Edit</a> {% endcomment %}
+
+{% endblock body_block %}
