@@ -47,7 +47,7 @@
 
         <div class="task-title">
             <a href="{% url "task-complete" task.id %}"><div class="task-incomplete-icon"></div></a>
-            <a href="{% url "task-detail-page" task.id %}"> {{task}} </a>
+            <a href="{% url "task-detail-page" task.id %}"> {{task}} <p style="font-size:10px;">({{task.created}})</p></a> 
         </div>      
 
        <div style="display:flex; align-items:center;justify-content:between;">
